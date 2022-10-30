@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<ASXMODULE VERSION="1.0" TITLE="Perso" CONTEXT="TfmElement"><LOCAL><SCRIPT>Class cClipBoard
+    Private objIE
+
+    Public Property Get Data()
+        Data = objIE.Document.ParentWindow.ClipboardData.GetData("Text")
+    End Property
+
+    Public Property Let Data ( Value )
+        objIE.Document.ParentWindow.ClipboardData.SetData "Text" , Value
+    End Property
+
+    Public Sub Clear()
+        objIE.Document.ParentWindow.ClipboardData.ClearData()
+    End Sub
+
+    Private Sub Class_Initialize
+        Set objIE = CreateObject("InternetExplorer.Application")
+        objIE.Navigate ("about:blank")
+    End Sub
+
+    Private Sub Class_Terminate
+        objIE.Quit
+        Set objIE = Nothing
+    End Sub
+End Class
+
+Dim Ret
+
+SUB Equiv
+Ret = 0
+IF getvalue("saiUniteAchatRef") = "T" THEN
+IF getvalue("saiUniteStock") = "ML" OR getvalue("saiUniteStock") = "Ml" THEN
+Ret = 1000 / getvalue("saiPoids")
+END IF
+IF getvalue("saiUniteStock") = "U" THEN
+Ret = 1000 / getvalue("saiPoids") / getvalue("saiLongueur")
+END IF
+ELSE
+IF getvalue("saiUniteAchatRef") = "U" THEN
+IF getvalue("saiUniteStock") = "ML" OR getvalue("saiUniteAchatRef") = "Ml" THEN
+Ret = 1 / getvalue("saiLongueur")
+END IF
+ELSE
+IF getvalue("saiUniteAchatRef") = "ML" OR getvalue("saiUniteAchatRef") = "Ml" THEN
+IF getvalue("saiUniteStock") = "U" THEN
+Ret = 1 / getvalue("saiLongueur")
+END IF
+ELSE
+MSGBOX("Le cas n'est pas enregistré")
+END IF
+END IF
+END IF
+IF Ret = 0 THEN
+MSGBOX("Il manque un paramètre ou le cas n'est pas enregistré")
+ELSE
+Retour = "" &amp; Round(Ret ,6)
+Dim ClipBoard
+Set Clipboard = New cClipBoard
+ClipBoard.Clear 'Effacement du contenu du presse papier
+ClipBoard.Data = Retour
+END IF
+
+
+END SUB</SCRIPT><FONCTIONS><FONCTION NAME="Equiv"/></FONCTIONS></LOCAL><INTERFACE><ITEM TYPE="icon" FONCTION="Equiv"><ICON>AAABAAEAEBAEAAAAAAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAwAAAAAAAAATAQAAAAAAABMBAAAAAAAAExEAAAAAAAAGcAAAAAAAAP5/AAAAAAAH+I9wAAAAAA+zO/AAAAAAeDMzhwAAAAD4O7OPAAAAB/s5k79wAAAH+Lu7j3AAAACI+7+IAAAAAIiLuIgAAAAACIiIgAAAAAAAB3AAAAD8PwAA+B8AAPgfAAD4HwAA/D8AAPgfAAD4HwAA8A8AAPAPAADgBwAA4AcAAOAHAADgBwAA4AcAAPAPAAD4HwAA</ICON></ITEM></INTERFACE><SCRIPTS><SCRIPT NAME="Ouverture"/><SCRIPT NAME="Fermeture"/><SCRIPT NAME="Validation"/><SCRIPT NAME="Après validation"/></SCRIPTS></ASXMODULE>
